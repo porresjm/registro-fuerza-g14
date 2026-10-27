@@ -1,0 +1,12 @@
+{
+  "name": "registro-fuerza-g14",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=20"},
+  "scripts": {
+    "check": "node --check dist/app.js && node --check dist/model.js && node --check scripts/prepare-source.mjs",
+    "test": "node --test tests/model.test.js",
+    "build": "npm run check && node scripts/prepare-source.mjs"
+  }
+}
