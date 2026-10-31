@@ -20,6 +20,7 @@ La interfaz busca que la persona comprenda qué carga está anotando, disponga d
 
 ## Funcionalidades
 
+- **Mapa muscular (inicio):** silueta de frente y espalda coloreada según la intensidad de los últimos 28 días. La intensidad combina la carga de la última serie (respecto de la mayor carga registrada en ese ejercicio) con los días transcurridos desde ella. Al tocar un músculo se muestran sus últimos entrenamientos.
 - **Registro por series:** ingreso de cargas y repeticiones, confirmación de cada serie y finalización de la sesión.
 - **Convenciones explícitas:** peso por mancuerna, peso total con barra y peso indicado en la máquina.
 - **Referencias fechadas:** consulta del último registro de cada ejercicio junto a los campos de entrada.
@@ -28,7 +29,7 @@ La interfaz busca que la persona comprenda qué carga está anotando, disponga d
 - **Contexto de la sesión:** notas y etiqueta personal opcionales, con posibilidad de añadir o quitar series.
 - **Historial editable:** corrección de cargas y repeticiones, con una opción temporal para deshacer el último cambio.
 - **Evolución personal:** gráfica y tabla de la mayor carga registrada por sesión para el ejercicio seleccionado.
-- **Datos de ejemplo:** tres sesiones iniciales y una acción para restablecerlas.
+- **Datos de ejemplo:** seis sesiones iniciales y una acción para restablecerlas.
 - **Visor de código:** página `/codigo/` generada durante la construcción.
 
 ## Decisiones de interacción
@@ -86,40 +87,20 @@ Abrir `http://localhost:8000` en el navegador. Si ya se está dentro de la carpe
 
 La aplicación utiliza módulos JavaScript, por lo que debe abrirse mediante un servidor HTTP y no directamente como archivo local.
 
-## Comprobaciones
-
-Desde `registro-fuerza-render/`:
-
-```bash
-npm run check
-npm test
-```
 
 Las pruebas comprueban que una corrección actualice la evolución y la referencia sin modificar otras sesiones, que se calcule el tiempo desde un registro y que se rechacen cargas o repeticiones inválidas. Estas comprobaciones técnicas no sustituyen una evaluación con usuarios.
 
-## Publicación
-
-Para la estructura actual del repositorio, configurar un **Static Site** en Render con:
-
-| Campo             | Valor                      |
-| ----------------- | -------------------------- |
-| Branch            | `main`                   |
-| Root Directory    | `registro-fuerza-render` |
-| Build Command     | `npm run build`          |
-| Publish Directory | `dist`                   |
-
-El archivo `README.md` debe estar junto a `package.json`, dentro de `registro-fuerza-render/`: el script de construcción lo lee para incluirlo en el visor de código. La navegación principal utiliza fragmentos de URL y no requiere una reescritura general de rutas.
 
 ## Datos y alcance de la versión
 
 Los datos se almacenan en el navegador y dominio desde el que se usa la aplicación. No se sincronizan entre dispositivos ni se trasladan automáticamente al cambiar de dominio. Limpiar el almacenamiento del navegador elimina los registros.
 
-En el primer acceso se cargan sesiones ficticias fechadas a 28, 21 y 14 días antes. Estos datos permiten recorrer las tareas del prototipo y se identifican como ejemplos en la interfaz.
+En el primer acceso se cargan seis sesiones ficticias, la más reciente de hace 10 días. Estos datos permiten recorrer las tareas del prototipo y se identifican como ejemplos en la interfaz.
 
-La versión incluye tres ejercicios: curl de bíceps con mancuernas, press de banca con barra y remo sentado en máquina. No implementa un planificador completo, gestión de alumnos, sincronización con relojes ni temporizador de descanso.
+La versión incluye siete ejercicios: curl de bíceps con mancuernas, press de banca con barra, remo sentado en máquina, sentadilla y peso muerto rumano con barra, elevación de talones en máquina y crunch en polea. Las sesiones de ejemplo alternan tren superior (28, 21 y 14 días antes) con pierna y core (24, 17 y 10 días antes). No implementa un planificador completo, gestión de alumnos, sincronización con relojes ni temporizador de descanso.
 
 La antigüedad de un registro no demuestra que la persona haya dejado de entrenar. El aviso tras siete días es una decisión de interacción provisional; no estima pérdida de fuerza ni prescribe cargas. La evolución representa datos registrados y no una medición validada de capacidad física.
 
 ## Uso de inteligencia artificial
 
-La preparación del prototipo y de la documentación contó con asistencia de ChatGPT diseño, programación, redacción de READ.me y comprobaciones técnicas. Su uso se declara en el anexo de IA del informe de la E2. Las entrevistas de la E1 constituyen la base empírica del proyecto; no se generaron nuevos testimonios ni resultados de evaluación con usuarios.
+La preparación del prototipo y de la documentación contó con asistencia de ChatGPT diseño, programación, redacción de README.me y comprobaciones técnicas. Su uso se declara en el anexo de IA del informe de la E2. Las entrevistas de la E1 constituyen la base empírica del proyecto; no se generaron nuevos testimonios ni resultados de evaluación con usuarios.
