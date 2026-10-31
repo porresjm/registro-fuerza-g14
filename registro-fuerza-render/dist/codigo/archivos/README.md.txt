@@ -1,49 +1,106 @@
-# Registro de fuerza Grupo 14
+# Registro de fuerza
 
-Prototipo de la Entrega 2 de IIC3182. Permite registrar sesiones, revisar referencias antiguas y corregir cargas con actualización de su evolución. Preparado con asistencia de IA, declarada en el informe del proyecto.
+Prototipo funcional para registrar y consultar entrenamientos de fuerza, desarrollado para la **Entrega 2 de IIC3182 Interfaces Humano-Computador**, Pontificia Universidad Católica de Chile, semestre 2026-2.
 
-## Publicar en Render desde GitHub
+**Grupo 14:** Juan Porres, Camilo Rivera, Thomas Jorquera y Martín Orellana.
 
-1. Crea un repositorio en GitHub llamado registro-fuerza-g14. Público permite que profesora y ayudante vean el código sin cuenta.
-2. Sube el contenido de esta carpeta al repositorio. package.json, render.yaml y README.md deben quedar en la raíz; dist, tests y scripts deben conservar sus carpetas.
-3. En Render, inicia sesión y elige New > Static Site.
-4. Conecta el repositorio GitHub.
-5. Usa estos valores:
+## Propósito
 
-| Campo | Valor |
-| --- | --- |
-| Name | registro-fuerza-g14, o el nombre disponible que prefieras |
-| Branch | main |
-| Root Directory | Dejar vacío |
-| Build Command | npm run build |
-| Publish Directory | dist |
+El proyecto aborda dificultades identificadas en las entrevistas de la Entrega 1: ambigüedad al registrar pesos, esfuerzo para recuperar información de sesiones anteriores y falta de contexto al consultar registros antiguos.
 
-6. Crea el sitio. Cuando el despliegue termine, abre la URL real que muestre Render. El nombre exacto puede variar según disponibilidad.
-7. Prueba registrar, corregir y consultar la evolución. Reemplaza en el informe la URL del sitio por la de Render y la del repositorio por la URL real de GitHub.
+La interfaz busca que la persona comprenda qué carga está anotando, disponga de una referencia fechada y pueda corregir errores sin reconstruir toda la sesión. Las mejoras de usabilidad propuestas se deben contrastar en la evaluación de la Entrega 3.
 
-También se incluye render.yaml para crear el servicio desde New > Blueprint. El flujo manual anterior permite revisar todos los campos.
+## Tareas principales
 
-## Desarrollo
+| Tarea                                     | Resultado esperado                                                                                                   |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| Registrar una sesión de fuerza           | Conservar cargas, repeticiones y notas en el historial, con la convención de peso correspondiente a cada ejercicio. |
+| Retomar el registro después de una pausa | Revisar las referencias anteriores y guardar una nueva sesión con cargas elegidas por la persona.                   |
+| Corregir un registro equivocado           | Editar una serie guardada y comprobar su actualización en el historial y la evolución personal.                    |
 
-Se requiere Node 20 o superior para las comprobaciones. No hay dependencias externas.
+## Funcionalidades
+
+- **Mapa muscular (inicio):** silueta de frente y espalda coloreada según la intensidad de los últimos 28 días. La intensidad combina la carga de la última serie (respecto de la mayor carga registrada en ese ejercicio) con los días transcurridos desde ella. Al tocar un músculo se muestran sus últimos entrenamientos.
+- **Registro por series:** ingreso de cargas y repeticiones, confirmación de cada serie y finalización de la sesión.
+- **Convenciones explícitas:** peso por mancuerna, peso total con barra y peso indicado en la máquina.
+- **Referencias fechadas:** consulta del último registro de cada ejercicio junto a los campos de entrada.
+- **Revisión de referencias antiguas:** aviso cuando transcurren siete días o más desde la última sesión registrada. No modifica automáticamente las cargas.
+- **Borrador persistente:** conserva el avance en el mismo navegador antes de finalizar la sesión.
+- **Contexto de la sesión:** notas y etiqueta personal opcionales, con posibilidad de añadir o quitar series.
+- **Historial editable:** corrección de cargas y repeticiones, con una opción temporal para deshacer el último cambio.
+- **Evolución personal:** gráfica y tabla de la mayor carga registrada por sesión para el ejercicio seleccionado.
+- **Datos de ejemplo:** seis sesiones iniciales y una acción para restablecerlas.
+- **Visor de código:** página `/codigo/` generada durante la construcción.
+
+## Decisiones de interacción
+
+La propuesta incorpora seis decisiones justificadas en el informe de la E2:
+
+1. Mostrar la convención de carga junto al campo para aclarar qué número se espera.
+2. Presentar el último registro con su fecha para reducir la dependencia de la memoria.
+3. Hacer visible la antigüedad de las referencias y mantener la decisión de carga bajo control del usuario.
+4. Diferenciar los valores precargados de las series confirmadas mediante estados visibles.
+5. Permitir correcciones y reflejarlas en las vistas derivadas.
+6. Explicar la comparación personal sin presentar rankings ni percentiles normativos.
+
+## Tecnologías
+
+| Componente               | Implementación                                 |
+| ------------------------ | ----------------------------------------------- |
+| Estructura               | HTML                                            |
+| Presentación            | CSS con diseño adaptable                       |
+| Interacción y cálculos | JavaScript con módulos ES                      |
+| Persistencia             | `localStorage` del navegador                  |
+| Comprobaciones           | Herramientas nativas de Node.js y `node:test` |
+| Publicación             | Sitio estático compatible con Render           |
+
+El proyecto no utiliza dependencias externas de JavaScript ni requiere un servidor de datos.
+
+## Organización del código
+
+Los siguientes archivos se encuentran dentro de `registro-fuerza-render/` en este repositorio:
+
+| Ruta                           | Función                                                             |
+| ------------------------------ | -------------------------------------------------------------------- |
+| `dist/index.html`            | Estructura principal y navegación.                                  |
+| `dist/style.css`             | Estilos y adaptación a distintos tamaños de pantalla.              |
+| `dist/app.js`                | Interacciones, navegación y persistencia.                           |
+| `dist/model.js`              | Catálogo de ejercicios, validación y cálculos sobre las sesiones. |
+| `tests/model.test.js`        | Pruebas de corrección de datos, antigüedad y validación.          |
+| `scripts/prepare-source.mjs` | Generación del visor de archivos en `dist/codigo/`.               |
+| `package.json`               | Comandos de construcción y comprobación.                           |
+| `render.yaml`                | Configuración básica de publicación estática.                    |
+
+## Ejecución local
+
+Se requiere **Node.js 20 o superior** para construir y comprobar el proyecto. Para el servidor estático de este ejemplo se utiliza Python 3.
+
+Desde la raíz del repositorio:
 
 ```bash
-npm test
+cd registro-fuerza-render
 npm run build
 python3 -m http.server 8000 --directory dist
 ```
 
-El visor /codigo/ se genera al construir. Las rutas del sitio son relativas y la navegación usa fragmentos de URL, por lo que no requiere una regla de reescritura general.
+Abrir `http://localhost:8000` en el navegador. Si ya se está dentro de la carpeta `registro-fuerza-render`, se omite el primer comando.
 
-## Datos
+La aplicación utiliza módulos JavaScript, por lo que debe abrirse mediante un servidor HTTP y no directamente como archivo local.
 
-Los registros se guardan en localStorage, dentro de este navegador y este dominio. Las sesiones iniciales son ejemplos. Al abrir desde un dominio nuevo se inicia un almacenamiento independiente: los registros del dominio anterior no se trasladan automáticamente.
 
-## Dominio propio
+Las pruebas comprueban que una corrección actualice la evolución y la referencia sin modificar otras sesiones, que se calcule el tiempo desde un registro y que se rechacen cargas o repeticiones inválidas. Estas comprobaciones técnicas no sustituyen una evaluación con usuarios.
 
-Si ya tienes un dominio, puedes asociarlo desde Settings > Custom Domains del sitio en Render y seguir las instrucciones DNS. La URL asignada por Render funciona sin comprar un dominio.
 
-## Referencias
+## Datos y alcance de la versión
 
-- https://render.com/docs/static-sites
-- https://render.com/docs/blueprint-spec
+Los datos se almacenan en el navegador y dominio desde el que se usa la aplicación. No se sincronizan entre dispositivos ni se trasladan automáticamente al cambiar de dominio. Limpiar el almacenamiento del navegador elimina los registros.
+
+En el primer acceso se cargan seis sesiones ficticias, la más reciente de hace 10 días. Estos datos permiten recorrer las tareas del prototipo y se identifican como ejemplos en la interfaz.
+
+La versión incluye siete ejercicios: curl de bíceps con mancuernas, press de banca con barra, remo sentado en máquina, sentadilla y peso muerto rumano con barra, elevación de talones en máquina y crunch en polea. Las sesiones de ejemplo alternan tren superior (28, 21 y 14 días antes) con pierna y core (24, 17 y 10 días antes). No implementa un planificador completo, gestión de alumnos, sincronización con relojes ni temporizador de descanso.
+
+La antigüedad de un registro no demuestra que la persona haya dejado de entrenar. El aviso tras siete días es una decisión de interacción provisional; no estima pérdida de fuerza ni prescribe cargas. La evolución representa datos registrados y no una medición validada de capacidad física.
+
+## Uso de inteligencia artificial
+
+La preparación del prototipo y de la documentación contó con asistencia de ChatGPT diseño, programación, redacción de README.me y comprobaciones técnicas. Su uso se declara en el anexo de IA del informe de la E2. Las entrevistas de la E1 constituyen la base empírica del proyecto; no se generaron nuevos testimonios ni resultados de evaluación con usuarios.
