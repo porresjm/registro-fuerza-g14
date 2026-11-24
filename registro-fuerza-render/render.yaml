@@ -2,5 +2,6 @@ services:
   - type: web
     name: registro-fuerza-g14
     runtime: static
-    buildCommand: npm run build
+    rootDir: registro-fuerza-render
+    buildCommand: npm ci && npm test && npm run build
     staticPublishPath: ./dist

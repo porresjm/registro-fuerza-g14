@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const files=['README.md','package.json','render.yaml','dist/index.html','dist/style.css','dist/model.js','dist/app.js','tests/model.test.js','scripts/prepare-source.mjs'];
+const files=['README.md','package.json','render.yaml','dist/index.html','dist/style.css','dist/model.js','dist/app.js','tests/model.test.js','tests/e3.test.js','tests/dom.test.js','scripts/prepare-source.mjs'];
 const escape=text=>text.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const destination=resolve(root,'dist/codigo');
 await mkdir(destination,{recursive:true});

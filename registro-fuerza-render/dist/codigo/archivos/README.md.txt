@@ -1,106 +1,83 @@
 # Registro de fuerza
 
-Prototipo funcional para registrar y consultar entrenamientos de fuerza, desarrollado para la **Entrega 2 de IIC3182 Interfaces Humano-Computador**, Pontificia Universidad Católica de Chile, semestre 2026-2.
+Prototipo de registro de entrenamientos de fuerza para IIC3182 Interfaces Humano-Computador, Pontificia Universidad Católica de Chile, semestre 2026-2.
 
 **Grupo 14:** Juan Porres, Camilo Rivera, Thomas Jorquera y Martín Orellana.
 
-## Propósito
+La interfaz permite registrar cargas con su convención, recuperar sesiones anteriores y corregirlas conservando el contexto. La versión 2.0.0 corresponde a la iteración de la Entrega 3, a partir del informe de las sesiones del 20 de noviembre.
 
-El proyecto aborda dificultades identificadas en las entrevistas de la Entrega 1: ambigüedad al registrar pesos, esfuerzo para recuperar información de sesiones anteriores y falta de contexto al consultar registros antiguos.
+## Cambios de la E3
 
-La interfaz busca que la persona comprenda qué carga está anotando, disponga de una referencia fechada y pueda corregir errores sin reconstruir toda la sesión. Las mejoras de usabilidad propuestas se deben contrastar en la evaluación de la Entrega 3.
+- Sesiones nuevas vacías: la persona añade únicamente los ejercicios y series que realizó.
+- Un solo botón **Guardar sesión** para incorporar todas las series al historial. El borrador automático se identifica como tal.
+- Consulta opcional de referencias anteriores, con explicación visible de su efecto y sin ventana que bloquee el guardado.
+- Catálogo ampliado de 7 a 16 ejercicios y creación de ejercicios personalizados, indicando convención de carga y grupos musculares.
+- Fecha editable. Las sesiones nuevas usan la fecha local y los borradores antiguos conservan su fecha de forma visible.
+- Filtros del historial por tipo de entrenamiento y músculo, con resumen de ejercicios y orden de más reciente a más antiguo.
+- Corrección de una sesión completa: fecha, series, ejercicios, notas y etiqueta se guardan conjuntamente, sin duplicar la sesión.
+- Cancelación con opción de conservar o descartar el borrador y deshacer un descarte.
+- Ayuda breve dentro del registro y botón principal visible desde el mapa muscular.
+- Conservación de los datos de la E2. Los borradores antiguos se mantienen y ofrecen retirar las series no confirmadas en una sola acción.
 
-## Tareas principales
+El mapa muscular y la evolución siguen usando las mismas sesiones guardadas. Los ejercicios personalizados también aparecen en ambas vistas.
 
-| Tarea                                     | Resultado esperado                                                                                                   |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| Registrar una sesión de fuerza           | Conservar cargas, repeticiones y notas en el historial, con la convención de peso correspondiente a cada ejercicio. |
-| Retomar el registro después de una pausa | Revisar las referencias anteriores y guardar una nueva sesión con cargas elegidas por la persona.                   |
-| Corregir un registro equivocado           | Editar una serie guardada y comprobar su actualización en el historial y la evolución personal.                    |
+## Convenciones de carga
 
-## Funcionalidades
+| Equipo | Valor que se registra |
+| --- | --- |
+| Mancuernas | Kilogramos de una mancuerna |
+| Barra | Kilogramos totales, incluyendo barra y discos |
+| Máquina o polea | Valor indicado en ese equipo |
+| Peso corporal o lastre, en ejercicios personalizados | Kilogramos adicionales; 0 cuando no hay lastre |
 
-- **Mapa muscular (inicio):** silueta de frente y espalda coloreada según la intensidad de los últimos 28 días. La intensidad combina la carga de la última serie (respecto de la mayor carga registrada en ese ejercicio) con los días transcurridos desde ella. Al tocar un músculo se muestran sus últimos entrenamientos.
-- **Registro por series:** ingreso de cargas y repeticiones, confirmación de cada serie y finalización de la sesión.
-- **Convenciones explícitas:** peso por mancuerna, peso total con barra y peso indicado en la máquina.
-- **Referencias fechadas:** consulta del último registro de cada ejercicio junto a los campos de entrada.
-- **Revisión de referencias antiguas:** aviso cuando transcurren siete días o más desde la última sesión registrada. No modifica automáticamente las cargas.
-- **Borrador persistente:** conserva el avance en el mismo navegador antes de finalizar la sesión.
-- **Contexto de la sesión:** notas y etiqueta personal opcionales, con posibilidad de añadir o quitar series.
-- **Historial editable:** corrección de cargas y repeticiones, con una opción temporal para deshacer el último cambio.
-- **Evolución personal:** gráfica y tabla de la mayor carga registrada por sesión para el ejercicio seleccionado.
-- **Datos de ejemplo:** seis sesiones iniciales y una acción para restablecerlas.
-- **Visor de código:** página `/codigo/` generada durante la construcción.
+Cada ejercicio muestra la convención junto a los campos. Las series requieren repeticiones enteras entre 1 y 100 y una carga positiva; los ejercicios de carga adicional admiten 0.
 
-## Decisiones de interacción
+## Ejecución y pruebas
 
-La propuesta incorpora seis decisiones justificadas en el informe de la E2:
+Se requiere Node.js 20 o superior. Dentro de la carpeta registro-fuerza-render:
 
-1. Mostrar la convención de carga junto al campo para aclarar qué número se espera.
-2. Presentar el último registro con su fecha para reducir la dependencia de la memoria.
-3. Hacer visible la antigüedad de las referencias y mantener la decisión de carga bajo control del usuario.
-4. Diferenciar los valores precargados de las series confirmadas mediante estados visibles.
-5. Permitir correcciones y reflejarlas en las vistas derivadas.
-6. Explicar la comparación personal sin presentar rankings ni percentiles normativos.
+    npm ci
+    npm test
+    npm run build
+    python3 -m http.server 8000 --directory dist
 
-## Tecnologías
+Abrir http://localhost:8000. La aplicación usa módulos ES y debe servirse mediante HTTP.
 
-| Componente               | Implementación                                 |
-| ------------------------ | ----------------------------------------------- |
-| Estructura               | HTML                                            |
-| Presentación            | CSS con diseño adaptable                       |
-| Interacción y cálculos | JavaScript con módulos ES                      |
-| Persistencia             | `localStorage` del navegador                  |
-| Comprobaciones           | Herramientas nativas de Node.js y `node:test` |
-| Publicación             | Sitio estático compatible con Render           |
+Las comprobaciones abarcan 13 casos de lógica y 12 casos de integración del DOM. El ejecutor informa 26 pruebas contando el bloque que agrupa los 12 casos de interacción. Cubren las tres tareas del informe recibido, persistencia, ejercicios propios, migración de datos y cancelación. jsdom es una dependencia de desarrollo; la aplicación publicada no carga librerías externas.
 
-El proyecto no utiliza dependencias externas de JavaScript ni requiere un servidor de datos.
+Estas pruebas no sustituyen la evaluación con personas ni una revisión visual en navegadores reales. No se ha medido un nuevo SUS tras las correcciones.
 
-## Organización del código
+## Archivos
 
-Los siguientes archivos se encuentran dentro de `registro-fuerza-render/` en este repositorio:
+| Archivo | Función |
+| --- | --- |
+| dist/index.html | Navegación y estructura principal |
+| dist/style.css | Presentación y estilos adaptables |
+| dist/app.js | Interacciones y persistencia |
+| dist/model.js | Catálogo, validaciones, migración y cálculos |
+| tests/model.test.js | Pruebas originales del modelo |
+| tests/e3.test.js | Regresiones del modelo para la E3 |
+| tests/dom.test.js | Recorridos de interacción con DOM simulado |
+| scripts/prepare-source.mjs | Generación del visor de código en /codigo/ |
 
-| Ruta                           | Función                                                             |
-| ------------------------------ | -------------------------------------------------------------------- |
-| `dist/index.html`            | Estructura principal y navegación.                                  |
-| `dist/style.css`             | Estilos y adaptación a distintos tamaños de pantalla.              |
-| `dist/app.js`                | Interacciones, navegación y persistencia.                           |
-| `dist/model.js`              | Catálogo de ejercicios, validación y cálculos sobre las sesiones. |
-| `tests/model.test.js`        | Pruebas de corrección de datos, antigüedad y validación.          |
-| `scripts/prepare-source.mjs` | Generación del visor de archivos en `dist/codigo/`.               |
-| `package.json`               | Comandos de construcción y comprobación.                           |
-| `render.yaml`                | Configuración básica de publicación estática.                    |
+## Publicación en Render
 
-## Ejecución local
+La URL del servicio existente es https://registro-fuerza-g14.onrender.com/.
 
-Se requiere **Node.js 20 o superior** para construir y comprobar el proyecto. Para el servidor estático de este ejemplo se utiliza Python 3.
+El repositorio contiene esta aplicación en la carpeta registro-fuerza-render. En el servicio estático de Render:
 
-Desde la raíz del repositorio:
+- **Root Directory:** registro-fuerza-render.
+- **Build Command:** npm ci && npm test && npm run build.
+- **Publish Directory:** dist.
 
-```bash
-cd registro-fuerza-render
-npm run build
-python3 -m http.server 8000 --directory dist
-```
+El render.yaml permite crear un servicio equivalente mediante un Blueprint. Subir archivos al repositorio no garantiza por sí solo que se haya publicado una versión: hay que comprobar el resultado del despliegue y que la cabecera muestre **Prototipo E3 · v2**.
 
-Abrir `http://localhost:8000` en el navegador. Si ya se está dentro de la carpeta `registro-fuerza-render`, se omite el primer comando.
+## Datos y límites
 
-La aplicación utiliza módulos JavaScript, por lo que debe abrirse mediante un servidor HTTP y no directamente como archivo local.
+Los datos permanecen en localStorage del mismo navegador y dominio. No hay cuentas ni sincronización entre dispositivos. La migración mantiene las sesiones existentes y los borradores de la E2. Cambiar de dominio o eliminar el almacenamiento no traslada ni conserva esos registros.
 
+El primer acceso incluye seis sesiones ficticias identificadas como ejemplos. El mapa combina antigüedad y carga relativa a registros propios; no mide recuperación, fatiga ni capacidad física. En ejercicios personalizados, los músculos elegidos se consideran asociaciones manuales para el mapa.
 
-Las pruebas comprueban que una corrección actualice la evolución y la referencia sin modificar otras sesiones, que se calcule el tiempo desde un registro y que se rechacen cargas o repeticiones inválidas. Estas comprobaciones técnicas no sustituyen una evaluación con usuarios.
+## Uso de IA
 
-
-## Datos y alcance de la versión
-
-Los datos se almacenan en el navegador y dominio desde el que se usa la aplicación. No se sincronizan entre dispositivos ni se trasladan automáticamente al cambiar de dominio. Limpiar el almacenamiento del navegador elimina los registros.
-
-En el primer acceso se cargan seis sesiones ficticias, la más reciente de hace 10 días. Estos datos permiten recorrer las tareas del prototipo y se identifican como ejemplos en la interfaz.
-
-La versión incluye siete ejercicios: curl de bíceps con mancuernas, press de banca con barra, remo sentado en máquina, sentadilla y peso muerto rumano con barra, elevación de talones en máquina y crunch en polea. Las sesiones de ejemplo alternan tren superior (28, 21 y 14 días antes) con pierna y core (24, 17 y 10 días antes). No implementa un planificador completo, gestión de alumnos, sincronización con relojes ni temporizador de descanso.
-
-La antigüedad de un registro no demuestra que la persona haya dejado de entrenar. El aviso tras siete días es una decisión de interacción provisional; no estima pérdida de fuerza ni prescribe cargas. La evolución representa datos registrados y no una medición validada de capacidad física.
-
-## Uso de inteligencia artificial
-
-La preparación del prototipo y de la documentación contó con asistencia de ChatGPT diseño, programación, redacción de README.me y comprobaciones técnicas. Su uso se declara en el anexo de IA del informe de la E2. Las entrevistas de la E1 constituyen la base empírica del proyecto; no se generaron nuevos testimonios ni resultados de evaluación con usuarios.
+ChatGPT asistió en la revisión del código, las modificaciones, las pruebas y la documentación. Las observaciones de participantes y el SUS de referencia proceden del informe recibido del grupo evaluador. No se generaron nuevas sesiones con personas ni testimonios para atribuirles a los evaluadores.
