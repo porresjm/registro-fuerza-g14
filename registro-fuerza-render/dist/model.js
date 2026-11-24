@@ -110,7 +110,7 @@ export const SESSION_TYPES=['Automático','Brazos','Tren superior','Piernas y co
 export function sessionType(s,catalog=CATALOG){
  if(s.type&&s.type!=='Automático')return s.type;
  const muscles=new Set(s.sets.flatMap(x=>Object.keys(workFor(x.exercise,catalog))));
- const upper=['biceps','triceps','pecho','espalda','hombros','trapecio','antebrazos'].some(m=>muscles.has(m));
+ const upper=s.sets.some(row=>Object.entries(workFor(row.exercise,catalog)).some(([m,share])=>share>=1&&['biceps','triceps','pecho','espalda','hombros','trapecio','antebrazos'].includes(m)));
  const lower=['cuadriceps','isquios','gluteos','gemelos'].some(m=>muscles.has(m));
  if(upper&&lower)return 'Cuerpo completo';
  if(lower||muscles.has('abdomen'))return 'Piernas y core';

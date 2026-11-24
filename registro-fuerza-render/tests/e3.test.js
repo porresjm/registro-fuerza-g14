@@ -70,3 +70,10 @@ test('los filtros combinan tipo y músculo sin alterar ni reordenar el estado or
  assert.equal(filterSessions(sessions,'Cuerpo completo','biceps')[0].id,'b');
  assert.deepEqual(filterSessions(sessions,'Brazos','cuadriceps'),[]);assert.deepEqual(sessions,copy);
 });
+
+test('el agarre secundario de un ejercicio de piernas no lo convierte en cuerpo completo',()=>{
+ const legs=seed(new Date(today+'T12:00:00')).sessions.filter(s=>s.id==='demo-10'||s.id==='demo-17'||s.id==='demo-24');
+ assert.ok(legs.every(s=>sessionType(s)==='Piernas y core'));
+ assert.deepEqual(filterSessions(legs,'Cuerpo completo'),[]);
+ assert.equal(sessionType({sets:[{exercise:'sentadilla'},{exercise:'curl'}]}),'Cuerpo completo');
+});

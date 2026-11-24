@@ -4,7 +4,7 @@ Prototipo de registro de entrenamientos de fuerza para IIC3182 Interfaces Humano
 
 **Grupo 14:** Juan Porres, Camilo Rivera, Thomas Jorquera y Martín Orellana.
 
-La interfaz permite registrar cargas con su convención, recuperar sesiones anteriores y corregirlas conservando el contexto. La versión 2.0.0 corresponde a la iteración de la Entrega 3, a partir del informe de las sesiones del 20 de noviembre.
+La interfaz permite registrar cargas con su convención, recuperar sesiones anteriores y corregirlas conservando el contexto. La versión 2.0.1 corresponde a la iteración de la Entrega 3, a partir del informe de las sesiones del 20 de noviembre.
 
 ## Cambios de la E3
 
@@ -43,7 +43,7 @@ Se requiere Node.js 20 o superior. Dentro de la carpeta registro-fuerza-render:
 
 Abrir http://localhost:8000. La aplicación usa módulos ES y debe servirse mediante HTTP.
 
-Las comprobaciones abarcan 13 casos de lógica y 12 casos de integración del DOM. El ejecutor informa 26 pruebas contando el bloque que agrupa los 12 casos de interacción. Cubren las tres tareas del informe recibido, persistencia, ejercicios propios, migración de datos y cancelación. jsdom es una dependencia de desarrollo; la aplicación publicada no carga librerías externas.
+Las comprobaciones abarcan 14 casos de lógica y 12 casos de integración del DOM. El ejecutor informa 27 pruebas contando el bloque que agrupa los 12 casos de interacción. Cubren las tres tareas del informe recibido, persistencia, ejercicios propios, migración de datos y cancelación. jsdom es una dependencia de desarrollo; la aplicación publicada no carga librerías externas.
 
 Estas pruebas no sustituyen la evaluación con personas ni una revisión visual en navegadores reales. No se ha medido un nuevo SUS tras las correcciones.
 
